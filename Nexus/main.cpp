@@ -3,7 +3,6 @@
 #if !RETRO_USE_ORIGINAL_CODE
 
 #if RETRO_PLATFORM == RETRO_WIN && _MSC_VER
-#pragma message "oi?"
 #include "Windows.h"
 #endif
 
@@ -95,9 +94,8 @@ int main(int argc, char *argv[])
     parseArguments(argc, argv);
 #endif
 
-    debugPrint("Engine Init \n");
+    debugPrint("Loading RSDKv1 Engine ... Please Wait \n");
     Engine.Init();
-    debugPrint("Engine Run \n");
     Engine.Run();
 
 #if !RETRO_USE_ORIGINAL_CODE

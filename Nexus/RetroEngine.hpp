@@ -55,7 +55,6 @@ typedef unsigned int uint;
 
 // use this macro (RETRO_PLATFORM) to define platform specific code blocks and etc to run the engine
 #if defined _WIN32 && !defined __XBOX__
-#pragma message "entrou aqui"
 #if defined WINAPI_FAMILY
 #if WINAPI_FAMILY != WINAPI_FAMILY_APP
 #define RETRO_PLATFORM (RETRO_WIN)
@@ -64,7 +63,6 @@ typedef unsigned int uint;
 #define RETRO_PLATFORM (RETRO_UWP)
 #endif
 #else
-#pragma message "entrou aqui 11111"
 #define RETRO_PLATFORM (RETRO_WIN)
 #endif
 #elif defined __APPLE__
@@ -78,7 +76,6 @@ typedef unsigned int uint;
 #elif TARGET_OS_MAC
 #define RETRO_PLATFORM (RETRO_OSX)
 #elif defined __XBOX__
-#pragma message "entrou aqui 2"
 #define RETRO_PLATFORM (RETRO_XBOX)
 #else
 #error "Unknown Apple platform"
@@ -93,8 +90,10 @@ typedef unsigned int uint;
 
 #if RETRO_PLATFORM == RETRO_XBOX
 #define BASE_PATH            "D:\\"
-#define DEFAULT_SCREEN_XSIZE 480
-#define DEFAULT_FULLSCREEN   false
+#define DEFAULT_SCREEN_XSIZE 320
+#define DEFAULT_FULLSCREEN   true
+#define SCREEN_YSIZE   (240)
+#define SCREEN_CENTERY (SCREEN_YSIZE / 2)
 #elif RETRO_PLATFORM == RETRO_UWP
 #define BASE_PATH            ""
 #define DEFAULT_SCREEN_XSIZE 320
@@ -131,8 +130,10 @@ enum RetroBytecodeFormat {
 };
 
 // General Defines
+#if RETRO_PLATFORM != RETRO_XBOX
 #define SCREEN_YSIZE   (240)
 #define SCREEN_CENTERY (SCREEN_YSIZE / 2)
+#endif
 
 #if RETRO_PLATFORM == RETRO_WIN || RETRO_PLATFORM == RETRO_UWP || RETRO_PLATFORM == RETRO_XBOX
 #if RETRO_USING_SDL2

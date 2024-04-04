@@ -253,8 +253,6 @@ void RetroEngine::Init()
     if (LoadGameConfig("Data/Game/GameConfig.bin")) {
         if (InitRenderDevice()) {
             if (InitAudioPlayback()) {
-                debugPrint("After InitAudioPlayback \n");
-
                 InitSystemMenu();
                 ClearScriptData();
                 initialised = true;
@@ -275,7 +273,6 @@ void RetroEngine::Run()
     unsigned long long curTicks   = 0;
     
     while (running) {
-        debugPrint("Running \n");
 #if !RETRO_USE_ORIGINAL_CODE
         if (!vsync) {
             if (SDL_GetPerformanceCounter() < curTicks + targetFreq)

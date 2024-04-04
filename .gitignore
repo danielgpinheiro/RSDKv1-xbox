@@ -242,3 +242,18 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 Ignored/
+
+*.res
+*.iso
+*.lib
+build/
+bin/
+*.obj
+*.d
+loader/**
+.vscode/**
+*.exe
+dependencies/xbox
+dependencies/xbox/nxdk
+*.pdb
+.DS_Store
