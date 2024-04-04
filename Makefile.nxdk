@@ -1,0 +1,75 @@
+XBE_TITLE = RSDKv1X
+GEN_XISO = $(XBE_TITLE).iso
+NXDK_DIR ?= $(CURDIR)/dependencies/xbox/nxdk
+NEXUS_DIR ?= $(CURDIR)/Nexus
+NXDK_CXX = y
+NXDK_SDL = y
+DEBUG = y
+
+SRCS += \
+			$(CURDIR)/xbox_vorbis/stb_image.c \
+			$(NEXUS_DIR)/Animation.cpp \
+			$(NEXUS_DIR)/Audio.cpp \
+			$(NEXUS_DIR)/Collision.cpp \
+			$(NEXUS_DIR)/Debug.cpp \
+			$(NEXUS_DIR)/Drawing.cpp \
+			$(NEXUS_DIR)/Ini.cpp \
+			$(NEXUS_DIR)/Input.cpp \
+			$(NEXUS_DIR)/main.cpp \
+			$(NEXUS_DIR)/Math.cpp \
+			$(NEXUS_DIR)/Object.cpp \
+			$(NEXUS_DIR)/Palette.cpp \
+			$(NEXUS_DIR)/Player.cpp \
+			$(NEXUS_DIR)/Reader.cpp \
+			$(NEXUS_DIR)/RetroEngine.cpp \
+			$(NEXUS_DIR)/Scene.cpp \
+			$(NEXUS_DIR)/Script.cpp \
+			$(NEXUS_DIR)/Sprite.cpp \
+			$(NEXUS_DIR)/String.cpp \
+			$(NEXUS_DIR)/Text.cpp \
+			$(NEXUS_DIR)/Userdata.cpp \
+			$(NEXUS_DIR)/Video.cpp
+
+INCLUDES += \
+			-I$(CURDIR)/xbox_vorbis \
+			-I$(NEXUS_DIR)/ \
+			-Idependencies/xbox/ogg/
+
+EXTRA_OFLAGS = \
+						-O2 \
+						-fsigned-char \
+						-fpermissive
+
+RSDK_FLAGS	=	\
+					-D__XBOX__ \
+					-DRETRO_USE_MOD_LOADER=0
+
+STB_FLAGS = \
+					-DSTBI_NO_SIMD \
+					-DSTBI_NO_THREAD_LOCALS \
+					-DSTBI_ONLY_PNG \
+					-DSTBI_ONLY_JPEG \
+					-DSTBI_ONLY_TGA \
+					-DSTBI_ONLY_BMP
+
+CFLAGS	+=	-g3 $(EXTRA_OFLAGS) -Wall $(INCLUDES) $(RSDK_FLAGS) $(STB_FLAGS)
+
+CXXFLAGS +=	$(CFLAGS) -Wpedantic
+
+# Add vorbis and ogg
+include $(CURDIR)/xbox_vorbis/Makefile-vorbis.nxdk
+include $(CURDIR)/xbox_vorbis/Makefile-ogg.nxdk
+
+include $(NXDK_DIR)/Makefile
+
+TARGET += $(OUTPUT_DIR)/Data.bin
+$(GEN_XISO): $(OUTPUT_DIR)/Data.bin
+$(OUTPUT_DIR)/Data.bin: ../Data.bin $(OUTPUT_DIR)
+	$(VE)cp '$<' '$@'
+
+clean_local:
+	@echo clean ...
+	rm -Rf ./bin
+	find . -name '*.iso' -type f -delete
+	find . -name '*.obj' ! -path './dependencies/xbox/nxdk/*' -type f -delete
+	find . -name '*.d' ! -path './dependencies/xbox/nxdk/*' -type f -delete

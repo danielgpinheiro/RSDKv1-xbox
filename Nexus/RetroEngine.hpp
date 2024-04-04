@@ -10,8 +10,8 @@
 #define RETRO_USE_MOD_LOADER    (0)
 
 #if !RETRO_USE_ORIGINAL_CODE
-#undef RETRO_USE_MOD_LOADER
-#define RETRO_USE_MOD_LOADER (1)
+// #undef RETRO_USE_MOD_LOADER
+// #define RETRO_USE_MOD_LOADER (1)
 #endif //  !RETRO_USE_ORIGINAL_CODE
 
 // ================
@@ -20,6 +20,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
+
+#ifdef __XBOX__
+#include <hal/debug.h>
+#include <hal/video.h>
+#include <windows.h>
+#include <stdbool.h>
+#include <hal/xbox.h>
+#endif
 
 // ================
 // STANDARD TYPES
@@ -39,13 +47,15 @@ typedef unsigned int uint;
 #define RETRO_WP7      (6)
 // Custom Platforms start here
 #define RETRO_UWP  (7)
+#define RETRO_XBOX (8)
 
 // Platform types (Game manages platform-specific code such as HUD position using this rather than the above)
 #define RETRO_STANDARD (0)
 #define RETRO_MOBILE   (1)
 
 // use this macro (RETRO_PLATFORM) to define platform specific code blocks and etc to run the engine
-#if defined _WIN32
+#if defined _WIN32 && !defined __XBOX__
+#pragma message "entrou aqui"
 #if defined WINAPI_FAMILY
 #if WINAPI_FAMILY != WINAPI_FAMILY_APP
 #define RETRO_PLATFORM (RETRO_WIN)
@@ -54,6 +64,7 @@ typedef unsigned int uint;
 #define RETRO_PLATFORM (RETRO_UWP)
 #endif
 #else
+#pragma message "entrou aqui 11111"
 #define RETRO_PLATFORM (RETRO_WIN)
 #endif
 #elif defined __APPLE__
@@ -66,14 +77,25 @@ typedef unsigned int uint;
 #define RETRO_PLATFORM (RETRO_iOS)
 #elif TARGET_OS_MAC
 #define RETRO_PLATFORM (RETRO_OSX)
+#elif defined __XBOX__
+#pragma message "entrou aqui 2"
+#define RETRO_PLATFORM (RETRO_XBOX)
 #else
 #error "Unknown Apple platform"
 #endif
 #else
+#if defined __XBOX__
+#define RETRO_PLATFORM (RETRO_XBOX)
+#else
 #define RETRO_PLATFORM (RETRO_WIN) // Default
 #endif
+#endif
 
-#if RETRO_PLATFORM == RETRO_UWP
+#if RETRO_PLATFORM == RETRO_XBOX
+#define BASE_PATH            "D:\\"
+#define DEFAULT_SCREEN_XSIZE 480
+#define DEFAULT_FULLSCREEN   false
+#elif RETRO_PLATFORM == RETRO_UWP
 #define BASE_PATH            ""
 #define DEFAULT_SCREEN_XSIZE 320
 #define DEFAULT_FULLSCREEN   false
@@ -86,7 +108,7 @@ typedef unsigned int uint;
 #endif
 
 #if RETRO_PLATFORM == RETRO_WIN || RETRO_PLATFORM == RETRO_OSX || RETRO_PLATFORM == RETRO_iOS                        \
-    || RETRO_PLATFORM == RETRO_UWP
+    || RETRO_PLATFORM == RETRO_UWP || RETRO_PLATFORM == RETRO_XBOX
 #define RETRO_USING_SDL1 (0)
 #define RETRO_USING_SDL2 (1)
 #else // Since its an else & not an elif these platforms probably aren't supported yet
@@ -112,7 +134,7 @@ enum RetroBytecodeFormat {
 #define SCREEN_YSIZE   (240)
 #define SCREEN_CENTERY (SCREEN_YSIZE / 2)
 
-#if RETRO_PLATFORM == RETRO_WIN || RETRO_PLATFORM == RETRO_UWP
+#if RETRO_PLATFORM == RETRO_WIN || RETRO_PLATFORM == RETRO_UWP || RETRO_PLATFORM == RETRO_XBOX
 #if RETRO_USING_SDL2
 #include <SDL.h>
 #elif RETRO_USING_SDL1
@@ -129,6 +151,9 @@ enum RetroBytecodeFormat {
 #include <vorbis/vorbisfile.h>
 
 #include "cocoaHelpers.hpp"
+#elif RETRO_PLATFORM == RETRO_XBOX
+#include <SDL.h>
+#include <vorbis/vorbisfile.h>
 #endif
 
 extern bool usingCWD;

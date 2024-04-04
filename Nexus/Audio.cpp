@@ -50,6 +50,12 @@ SDL_AudioDeviceID audioDevice;
 int InitAudioPlayback()
 {
     StopAllSfx(); //"init"
+
+     #if RETRO_PLATFORM == RETRO_XBOX
+        audioEnabled = false;
+        return 1;
+    #endif
+
 #if RETRO_USING_SDL1 || RETRO_USING_SDL2
     SDL_AudioSpec want;
     want.freq     = AUDIO_FREQUENCY;
