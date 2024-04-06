@@ -4,8 +4,6 @@
 #include <winrt/Windows.Storage.h>
 #endif
 
-#include "../xbox_vorbis/sdl20compat.inc.c"
-
 bool usingCWD        = false;
 bool engineDebugMode = false;
 

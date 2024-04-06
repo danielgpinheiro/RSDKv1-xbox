@@ -1,9 +1,6 @@
 [submodule "dependencies/xbox/ogg"]
 	path = dependencies/xbox/ogg
 	url = https://github.com/xiph/ogg.git
-[submodule "dependencies/xbox/nxdk"]
-	path = dependencies/xbox/nxdk
-	url = https://github.com/danielgpinheiro/nxdk.git
 [submodule "dependencies/xbox/vorbis"]
 	path = dependencies/xbox/vorbis
 	url = https://github.com/danielgpinheiro/vorbis.git

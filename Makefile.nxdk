@@ -1,7 +1,7 @@
 XBE_TITLE = SonicNexusX
 GEN_XISO = $(XBE_TITLE).iso
-NXDK_DIR ?= $(CURDIR)/dependencies/xbox/nxdk
-NEXUS_DIR ?= $(CURDIR)/Nexus
+NXDK_DIR = $(CURDIR)/dependencies/xbox/nxdk
+NEXUS_DIR = $(CURDIR)/Nexus
 NXDK_CXX = y
 NXDK_SDL = y
 
