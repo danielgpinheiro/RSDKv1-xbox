@@ -131,6 +131,12 @@ void ProcessStage(void)
                 PauseSound();
             }
 
+            if (keyDown.back) {
+                #if RETRO_PLATFORM == RETRO_XBOX
+                    XReboot();
+                #endif
+            }
+
             if (timeEnabled) {
                 if (++frameCounter == Engine.refreshRate) {
                     frameCounter = 0;
@@ -206,6 +212,13 @@ void ProcessStage(void)
                 stageMode = STAGEMODE_NORMAL;
                 ResumeSound();
             }
+
+            if (keyDown.back) {
+                #if RETRO_PLATFORM == RETRO_XBOX
+                    XReboot();
+                #endif
+            }
+
             break;
     }
     Engine.frameCount++;

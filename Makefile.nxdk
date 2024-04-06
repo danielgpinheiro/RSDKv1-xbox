@@ -1,10 +1,9 @@
-XBE_TITLE = RSDKv1X
+XBE_TITLE = SonicNexusX
 GEN_XISO = $(XBE_TITLE).iso
 NXDK_DIR ?= $(CURDIR)/dependencies/xbox/nxdk
 NEXUS_DIR ?= $(CURDIR)/Nexus
 NXDK_CXX = y
 NXDK_SDL = y
-DEBUG = y
 
 SRCS += \
 			$(CURDIR)/xbox_vorbis/stb_image.c \
@@ -56,16 +55,17 @@ CFLAGS	+=	-g3 $(EXTRA_OFLAGS) -Wall $(INCLUDES) $(RSDK_FLAGS) $(STB_FLAGS)
 
 CXXFLAGS +=	$(CFLAGS) -Wpedantic
 
+new_all: copy_resources all
+
 # Add vorbis and ogg
 include $(CURDIR)/xbox_vorbis/Makefile-vorbis.nxdk
 include $(CURDIR)/xbox_vorbis/Makefile-ogg.nxdk
 
 include $(NXDK_DIR)/Makefile
 
-TARGET += $(OUTPUT_DIR)/Data.bin
-$(GEN_XISO): $(OUTPUT_DIR)/Data.bin
-$(OUTPUT_DIR)/Data.bin: ../Data.bin $(OUTPUT_DIR)
-	$(VE)cp '$<' '$@'
+copy_resources:
+	@mkdir -p $(OUTPUT_DIR)
+	@cp -r ../nexus_bin/Data.bin $(OUTPUT_DIR)
 
 clean_local:
 	@echo clean ...

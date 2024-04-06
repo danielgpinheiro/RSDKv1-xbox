@@ -105,6 +105,7 @@ const char variableNames[][0x20] = {
     "KeyDown.ButtonB",
     "KeyDown.ButtonC",
     "KeyDown.Start",
+    "KeyDown.Back",
     "KeyPress.Up",
     "KeyPress.Down",
     "KeyPress.Left",
@@ -113,6 +114,7 @@ const char variableNames[][0x20] = {
     "KeyPress.ButtonB",
     "KeyPress.ButtonC",
     "KeyPress.Start",
+    "KeyPress.Back",
     "Menu1.Selection",
     "Menu2.Selection",
     "Stage.ActiveList",
@@ -366,6 +368,7 @@ enum ScrVariable {
     VAR_KEYDOWNBUTTONB,
     VAR_KEYDOWNBUTTONC,
     VAR_KEYDOWNSTART,
+    VAR_KEYDOWNBACK,
     VAR_KEYPRESSUP,
     VAR_KEYPRESSDOWN,
     VAR_KEYPRESSLEFT,
@@ -374,6 +377,7 @@ enum ScrVariable {
     VAR_KEYPRESSBUTTONB,
     VAR_KEYPRESSBUTTONC,
     VAR_KEYPRESSSTART,
+    VAR_KEYPRESSBACK,
     VAR_MENU1SELECTION,
     VAR_MENU2SELECTION,
     VAR_STAGEACTIVELIST,
@@ -1547,6 +1551,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYDOWNBUTTONB: scriptEng.operands[i] = keyDown.B; break;
                     case VAR_KEYDOWNBUTTONC: scriptEng.operands[i] = keyDown.C; break;
                     case VAR_KEYDOWNSTART: scriptEng.operands[i] = keyDown.start; break;
+                    case VAR_KEYDOWNBACK: scriptEng.operands[i] = keyDown.back; break;
                     case VAR_KEYPRESSUP: scriptEng.operands[i] = keyPress.up; break;
                     case VAR_KEYPRESSDOWN: scriptEng.operands[i] = keyPress.down; break;
                     case VAR_KEYPRESSLEFT: scriptEng.operands[i] = keyPress.left; break;
@@ -1555,6 +1560,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYPRESSBUTTONB: scriptEng.operands[i] = keyPress.B; break;
                     case VAR_KEYPRESSBUTTONC: scriptEng.operands[i] = keyPress.C; break;
                     case VAR_KEYPRESSSTART: scriptEng.operands[i] = keyPress.start; break;
+                    case VAR_KEYPRESSBACK: scriptEng.operands[i] = keyPress.back; break;
                     case VAR_MENU1SELECTION: scriptEng.operands[i] = gameMenu[0].selection1; break;
                     case VAR_MENU2SELECTION: scriptEng.operands[i] = gameMenu[1].selection1; break;
                     case VAR_STAGEACTIVELIST: scriptEng.operands[i] = activeStageList; break;
@@ -2687,6 +2693,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYDOWNBUTTONB: keyDown.B = scriptEng.operands[i]; break;
                     case VAR_KEYDOWNBUTTONC: keyDown.C = scriptEng.operands[i]; break;
                     case VAR_KEYDOWNSTART: keyDown.start = scriptEng.operands[i]; break;
+                    case VAR_KEYDOWNBACK: keyDown.back = scriptEng.operands[i]; break;
                     case VAR_KEYPRESSUP: keyPress.up = scriptEng.operands[i]; break;
                     case VAR_KEYPRESSDOWN: keyPress.down = scriptEng.operands[i]; break;
                     case VAR_KEYPRESSLEFT: keyPress.left = scriptEng.operands[i]; break;
@@ -2695,6 +2702,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYPRESSBUTTONB: keyPress.B = scriptEng.operands[i]; break;
                     case VAR_KEYPRESSBUTTONC: keyPress.C = scriptEng.operands[i]; break;
                     case VAR_KEYPRESSSTART: keyPress.start = scriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBACK: keyPress.back = scriptEng.operands[i]; break;
                     case VAR_MENU1SELECTION: gameMenu[0].selection1 = scriptEng.operands[i]; break;
                     case VAR_MENU2SELECTION: gameMenu[1].selection1 = scriptEng.operands[i]; break;
                     case VAR_STAGEACTIVELIST: activeStageList = scriptEng.operands[i]; break;

@@ -30,7 +30,7 @@ std::vector<SDL_GameController *> controllers;
 #endif
 
 #if RETRO_USING_SDL1
-byte keyState[SDLK_LAST];
+byte keyState[SDL_NUM_SCANCODES];
 
 SDL_Joystick *controller = nullptr;
 #endif
@@ -377,6 +377,8 @@ void CheckKeyPress(InputData *input, byte flags)
     if (flags & 0x80)
         input->start = inputDevice[INPUT_START].press;
     if (flags & 0x80)
+        input->back = inputDevice[INPUT_BACK].press;
+    if (flags & 0x80)
         anyPress = inputDevice[INPUT_ANY].press;
 }
 
@@ -398,4 +400,6 @@ void CheckKeyDown(InputData *input, byte flags)
         input->C = inputDevice[INPUT_BUTTONC].hold;
     if (flags & 0x80)
         input->start = inputDevice[INPUT_START].hold;
+    if (flags & 0x80)
+        input->back = inputDevice[INPUT_BACK].hold;
 }

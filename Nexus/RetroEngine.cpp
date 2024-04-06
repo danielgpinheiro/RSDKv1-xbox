@@ -4,6 +4,8 @@
 #include <winrt/Windows.Storage.h>
 #endif
 
+#include "../xbox_vorbis/sdl20compat.inc.c"
+
 bool usingCWD        = false;
 bool engineDebugMode = false;
 
@@ -130,7 +132,7 @@ bool processEvents()
                         if (Engine.isFullScreen) {
 #if RETRO_USING_SDL1
                             Engine.windowSurface = SDL_SetVideoMode(SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 16,
-                                                                    SDL_SWSURFACE | SDL_FULLSCREEN);
+                                                                    SDL_SWSURFACE | SDL_ANYFORMAT);
                             SDL_ShowCursor(SDL_FALSE);
 #endif
 

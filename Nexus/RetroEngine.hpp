@@ -92,8 +92,6 @@ typedef unsigned int uint;
 #define BASE_PATH            "D:\\"
 #define DEFAULT_SCREEN_XSIZE 320
 #define DEFAULT_FULLSCREEN   true
-#define SCREEN_YSIZE   (240)
-#define SCREEN_CENTERY (SCREEN_YSIZE / 2)
 #elif RETRO_PLATFORM == RETRO_UWP
 #define BASE_PATH            ""
 #define DEFAULT_SCREEN_XSIZE 320
@@ -130,10 +128,8 @@ enum RetroBytecodeFormat {
 };
 
 // General Defines
-#if RETRO_PLATFORM != RETRO_XBOX
 #define SCREEN_YSIZE   (240)
 #define SCREEN_CENTERY (SCREEN_YSIZE / 2)
-#endif
 
 #if RETRO_PLATFORM == RETRO_WIN || RETRO_PLATFORM == RETRO_UWP || RETRO_PLATFORM == RETRO_XBOX
 #if RETRO_USING_SDL2

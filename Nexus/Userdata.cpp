@@ -70,6 +70,7 @@ void InitUserdata()
         ini.SetInteger("Keyboard 1", "B", inputDevice[INPUT_BUTTONB].keyMappings = SDL_SCANCODE_S);
         ini.SetInteger("Keyboard 1", "C", inputDevice[INPUT_BUTTONC].keyMappings = SDL_SCANCODE_D);
         ini.SetInteger("Keyboard 1", "Start", inputDevice[INPUT_START].keyMappings = SDL_SCANCODE_RETURN);
+        ini.SetInteger("Keyboard 1", "Back", inputDevice[INPUT_BACK].keyMappings = SDL_SCANCODE_BACKSPACE);
 
         ini.SetComment("Controller 1", "IC1Comment", "Controller Mappings for P1 (Based on: https://wiki.libsdl.org/SDL_GameControllerButton)");
         ini.SetInteger("Controller 1", "Up", inputDevice[INPUT_UP].contMappings = SDL_CONTROLLER_BUTTON_DPAD_UP);
@@ -80,6 +81,7 @@ void InitUserdata()
         ini.SetInteger("Controller 1", "B", inputDevice[INPUT_BUTTONB].contMappings = SDL_CONTROLLER_BUTTON_B);
         ini.SetInteger("Controller 1", "C", inputDevice[INPUT_BUTTONC].contMappings = SDL_CONTROLLER_BUTTON_X);
         ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings = SDL_CONTROLLER_BUTTON_START);
+        ini.SetInteger("Controller 1", "Back", inputDevice[INPUT_BACK].contMappings = SDL_CONTROLLER_BUTTON_BACK);
 #endif
 
 #if RETRO_USING_SDL1
@@ -104,7 +106,7 @@ void InitUserdata()
         ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings = 8);
 #endif
 
-        ini.Write(BASE_PATH"settings.ini");
+        // ini.Write(BASE_PATH"settings.ini");
     }
     else {
         fClose(file);
@@ -144,7 +146,7 @@ void InitUserdata()
         int cm = Engine.colourMode;
         if (!ini.GetInteger("Window", "ColourMode", &cm))
             cm = 1;
-        Engine.colourMode = cm;
+        Engine.colourMode = 2;
 
         float bv = 0, sv = 0;
         if (!ini.GetFloat("Audio", "BGMVolume", &bv))
@@ -182,6 +184,8 @@ void InitUserdata()
             inputDevice[6].keyMappings = SDL_SCANCODE_D;
         if (!ini.GetInteger("Keyboard 1", "Start", &inputDevice[INPUT_START].keyMappings))
             inputDevice[7].keyMappings = SDL_SCANCODE_RETURN;
+        if (!ini.GetInteger("Keyboard 1", "Back", &inputDevice[INPUT_BACK].keyMappings))
+            inputDevice[7].keyMappings = SDL_SCANCODE_BACKSPACE;
 
         if (!ini.GetInteger("Controller 1", "Up", &inputDevice[INPUT_UP].contMappings))
             inputDevice[0].contMappings = SDL_CONTROLLER_BUTTON_DPAD_UP;
@@ -199,6 +203,8 @@ void InitUserdata()
             inputDevice[6].contMappings = SDL_CONTROLLER_BUTTON_X;
         if (!ini.GetInteger("Controller 1", "Start", &inputDevice[INPUT_START].contMappings))
             inputDevice[7].contMappings = SDL_CONTROLLER_BUTTON_START;
+        if (!ini.GetInteger("Controller 1", "Back", &inputDevice[INPUT_BACK].contMappings))
+            inputDevice[7].contMappings = SDL_CONTROLLER_BUTTON_BACK;
 #endif
 
 #if RETRO_USING_SDL1
@@ -316,6 +322,7 @@ void writeSettings() {
     ini.SetInteger("Keyboard 1", "B", inputDevice[INPUT_BUTTONB].keyMappings);
     ini.SetInteger("Keyboard 1", "C", inputDevice[INPUT_BUTTONC].keyMappings);
     ini.SetInteger("Keyboard 1", "Start", inputDevice[INPUT_START].keyMappings);
+    ini.SetInteger("Keyboard 1", "Back", inputDevice[INPUT_BACK].keyMappings);
 
 #if RETRO_USING_SDL2
     ini.SetComment("Controller 1", "IC1Comment", "Controller Mappings for P1 (Based on: https://wiki.libsdl.org/SDL_GameControllerButton)");
@@ -339,8 +346,9 @@ void writeSettings() {
     ini.SetInteger("Controller 1", "B", inputDevice[INPUT_BUTTONB].contMappings);
     ini.SetInteger("Controller 1", "C", inputDevice[INPUT_BUTTONC].contMappings);
     ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings);
+    ini.SetInteger("Controller 1", "Back", inputDevice[INPUT_BACK].contMappings);
 
-    ini.Write(BASE_PATH"settings.ini");
+    // ini.Write(BASE_PATH"settings.ini");
 }
 
 // #if RETRO_USE_MOD_LOADER

@@ -10,6 +10,7 @@ enum InputButtons {
     INPUT_BUTTONB,
     INPUT_BUTTONC,
     INPUT_START,
+    INPUT_BACK,
     INPUT_ANY,
     INPUT_MAX,
 };
@@ -23,6 +24,7 @@ struct InputData {
     bool B;
     bool C;
     bool start;
+    bool back;
 };
 
 struct InputButton {
@@ -82,7 +84,7 @@ void controllerClose(byte controllerID);
 #endif
 
 #if RETRO_USING_SDL1
-extern byte keyState[SDLK_LAST];
+extern byte keyState[SDL_NUM_SCANCODES];
 
 extern SDL_Joystick *controller;
 #endif

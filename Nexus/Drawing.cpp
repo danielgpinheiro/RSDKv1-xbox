@@ -26,21 +26,28 @@ int InitRenderDevice()
     memset(Engine.pixelBuffer, 0, (SCREEN_XSIZE * SCREEN_YSIZE) * sizeof(byte));
 
 #if RETRO_USING_SDL2
-    SDL_Init(SDL_INIT_EVERYTHING);
+    #if RETRO_PLATFORM == RETRO_XBOX
+        SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
+    #else
+        SDL_Init(SDL_INIT_EVERYTHING);
+    #endif
 
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-    SDL_SetHint(SDL_HINT_RENDER_VSYNC, Engine.vsync ? "1" : "0");
-    SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
-    SDL_SetHint(SDL_HINT_WINRT_HANDLE_BACK_BUTTON, "1");
+    // SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+    // SDL_SetHint(SDL_HINT_RENDER_VSYNC, Engine.vsync ? "1" : "0");
+    // SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+    // SDL_SetHint(SDL_HINT_WINRT_HANDLE_BACK_BUTTON, "1");
 
     byte flags      = 0;
-    // TODO XBOX
-    // Engine.window   = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_XSIZE * Engine.windowScale,
-    //                                  SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
-    Engine.window   = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
-    // TODO XBOX
-    // Engine.renderer = SDL_CreateRenderer(Engine.window, -1, SDL_RENDERER_ACCELERATED);
-    Engine.renderer = SDL_CreateRenderer(Engine.window, -1, 0);
+    
+    #if RETRO_PLATFORM == RETRO_XBOX
+        Engine.window   = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_XSIZE, SCREEN_YSIZE, SDL_WINDOW_SHOWN);
+        Engine.renderer = SDL_CreateRenderer(Engine.window, -1, 0);
+    #else
+        Engine.window   = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_XSIZE * Engine.windowScale,
+                                     SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
+        Engine.renderer = SDL_CreateRenderer(Engine.window, -1, SDL_RENDERER_ACCELERATED);
+    #endif
+    
 
     if (!Engine.window) {
         printLog("ERROR: failed to create window!");
@@ -54,10 +61,11 @@ int InitRenderDevice()
         return 0;
     }
 
-    // TODO XBOX
-    // SDL_RenderSetLogicalSize(Engine.renderer, SCREEN_XSIZE, SCREEN_YSIZE);
-    SDL_RenderSetLogicalSize(Engine.renderer, 1280, 720);
-    SDL_SetRenderDrawBlendMode(Engine.renderer, SDL_BLENDMODE_BLEND);
+    SDL_RenderSetLogicalSize(Engine.renderer, SCREEN_XSIZE, SCREEN_YSIZE);
+
+    #if RETRO_PLATFORM != RETRO_XBOX
+        SDL_SetRenderDrawBlendMode(Engine.renderer, SDL_BLENDMODE_BLEND);
+    #endif
 
     int colourMode = 0;
     if (Engine.colourMode == 1)
@@ -65,7 +73,11 @@ int InitRenderDevice()
     else
         colourMode = SDL_PIXELFORMAT_RGB888;
 
-    Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, colourMode, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
+    #if RETRO_PLATFORM == RETRO_XBOX
+        Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
+    #else
+        Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, colourMode, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
+    #endif
 
     if (!Engine.screenBuffer) {
         printLog("ERROR: failed to create screen buffer!\nerror msg: %s", SDL_GetError());
@@ -88,7 +100,7 @@ int InitRenderDevice()
     SDL_DisplayMode disp;
     int winID = SDL_GetWindowDisplayIndex(Engine.window);
     if (SDL_GetCurrentDisplayMode(winID, &disp) == 0) {
-        Engine.screenRefreshRate = disp.refresh_rate;
+        Engine.screenRefreshRate = 60;
     }
     else {
         printf("error: %s", SDL_GetError());
@@ -136,7 +148,7 @@ int InitRenderDevice()
 
     if (Engine.startFullScreen) {
         Engine.windowSurface =
-            SDL_SetVideoMode(SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 16, SDL_SWSURFACE | SDL_FULLSCREEN);
+            SDL_SetVideoMode(SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 16, SDL_SWSURFACE | SDL_ANYFORMAT);
         SDL_ShowCursor(SDL_FALSE);
         Engine.isFullScreen = true;
     }
@@ -149,7 +161,8 @@ int InitRenderDevice()
 
     // SDL_SetWindowPosition(Engine.window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
-    Engine.useHQModes = false; // disabled
+    // TODO XBOX
+    // Engine.useHQModes = false; // disabled
     Engine.borderless = false; // disabled
 #endif
 
@@ -166,7 +179,7 @@ void FlipScreen()
         // Clear the screen. This is needed to keep the
         // pillarboxes in fullscreen from displaying garbage data.
 #if RETRO_USING_SDL2
-    SDL_RenderClear(Engine.renderer);
+    // SDL_RenderClear(Engine.renderer);
 #endif
 
     int pitch    = 0;
@@ -176,7 +189,7 @@ void FlipScreen()
         case 0: // 8-bit
         {
             uint *frameBuffer = new uint[SCREEN_XSIZE * SCREEN_YSIZE];
-            memset(frameBuffer, 0, (SCREEN_XSIZE * SCREEN_YSIZE) * sizeof(uint));
+            // memset(frameBuffer, 0, (SCREEN_XSIZE * SCREEN_YSIZE) * sizeof(uint));
             if (fadeMode) {
                 for (int y = 0; y < waterDrawPos; ++y) {
                     for (int x = 0; x < SCREEN_XSIZE; ++x) {
@@ -317,6 +330,7 @@ void FlipScreen()
 
 #if RETRO_USING_SDL2
     SDL_SetRenderTarget(Engine.renderer, NULL);
+    SDL_RenderClear(Engine.renderer);
     SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, NULL);
 
     SDL_RenderPresent(Engine.renderer);
