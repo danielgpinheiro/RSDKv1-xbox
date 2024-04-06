@@ -6,7 +6,7 @@ NXDK_CXX = y
 NXDK_SDL = y
 
 SRCS += \
-			$(CURDIR)/xbox_vorbis/stb_image.c \
+			$(CURDIR)/dependencies/xbox/stb/stb_image.c \
 			$(NEXUS_DIR)/Animation.cpp \
 			$(NEXUS_DIR)/Audio.cpp \
 			$(NEXUS_DIR)/Collision.cpp \
@@ -30,9 +30,9 @@ SRCS += \
 			$(NEXUS_DIR)/Video.cpp
 
 INCLUDES += \
-			-I$(CURDIR)/xbox_vorbis \
 			-I$(NEXUS_DIR)/ \
-			-Idependencies/xbox/ogg/
+			-I$(CURDIR)/dependencies/xbox/ogg/ \
+			-I$(CURDIR)/dependencies/xbox/stb/ \
 
 EXTRA_OFLAGS = \
 						-O2 \
@@ -58,8 +58,8 @@ CXXFLAGS +=	$(CFLAGS) -Wpedantic
 new_all: copy_resources all
 
 # Add vorbis and ogg
-include $(CURDIR)/xbox_vorbis/Makefile-vorbis.nxdk
-include $(CURDIR)/xbox_vorbis/Makefile-ogg.nxdk
+include $(CURDIR)/dependencies/xbox/Makefile-vorbis.nxdk
+include $(CURDIR)/dependencies/xbox/Makefile-ogg.nxdk
 
 include $(NXDK_DIR)/Makefile
 
