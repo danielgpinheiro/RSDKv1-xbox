@@ -55,17 +55,11 @@ CFLAGS	+=	-g3 $(EXTRA_OFLAGS) -Wall $(INCLUDES) $(RSDK_FLAGS) $(STB_FLAGS)
 
 CXXFLAGS +=	$(CFLAGS) -Wpedantic
 
-new_all: copy_resources all
-
 # Add vorbis and ogg
 include $(CURDIR)/dependencies/xbox/Makefile-vorbis.nxdk
 include $(CURDIR)/dependencies/xbox/Makefile-ogg.nxdk
 
 include $(NXDK_DIR)/Makefile
-
-copy_resources:
-	@mkdir -p $(OUTPUT_DIR)
-	@cp -r ../nexus_bin/Data.bin $(OUTPUT_DIR)
 
 clean_local:
 	@echo clean ...
