@@ -258,3 +258,4 @@ dependencies/xbox/vorbis
 dependencies/xbox/nxdk
 *.pdb
 .DS_Store
+build_nxdk.sh
