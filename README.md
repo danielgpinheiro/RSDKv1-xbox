@@ -1,5 +1,40 @@
-# Sonic Nexus (2008, RSDK) Decompilation
+# RSDKv1 to Original Xbox - Sonic Nexus (2008, RSDK) Decompilation
 A Full Decompilation of Sonic Nexus (2008), a Retro Engine game made by Taxman.
+
+# About the project
+
+- This fork over the port for Original Xbox
+- This is Retro Engine v1, compatible with Sonic Nexus
+- To run this, you need the game's assets. Put Data.bin in the root of the same folder where the .xbe executable is. You find the game assets where. [Sonic Nexus Assets.](https://info.sonicretro.org/Sonic_Nexus)
+
+## Original Xbox Controls
+
+- D-pad or Left Analog Stick - Movement
+- A Button - Jump
+- B Button - Dash
+- Start Button - Pause
+- Back Button - Exit Game
+
+## Recurring problems
+
+- The intro gif cutscene don't render properly, press start to skip to start screen.
+
+## Build Original Xbox binaries / xISO
+
+First, you need to configure nxdk according to your operating system, you can see that [here](https://github.com/XboxDev/nxdk/wiki/Install-the-Prerequisites)
+
+After that, compile using these commands in the terminal
+
+```bash
+
+git clone --recursive https://github.com/danielgpinheiro/RSDKv1-xbox.git
+
+./dependencies/xbox/nxdk/bin/activate
+
+make  -f  Makefile.nxdk
+```
+
+# Original description
 
 Without assets from the game, this decompilation will not run. You can download the game [here](https://info.sonicretro.org/Sonic_Nexus).
 
