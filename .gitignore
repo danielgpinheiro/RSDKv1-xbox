@@ -253,7 +253,8 @@ bin/
 loader/**
 .vscode/**
 *.exe
-dependencies/xbox
+dependencies/xbox/obb
+dependencies/xbox/vorbis
 dependencies/xbox/nxdk
 *.pdb
 .DS_Store

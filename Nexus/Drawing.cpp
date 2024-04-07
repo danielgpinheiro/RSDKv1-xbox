@@ -61,10 +61,7 @@ int InitRenderDevice()
     }
 
     SDL_RenderSetLogicalSize(Engine.renderer, SCREEN_XSIZE, SCREEN_YSIZE);
-
-    #if RETRO_PLATFORM != RETRO_XBOX
-        SDL_SetRenderDrawBlendMode(Engine.renderer, SDL_BLENDMODE_BLEND);
-    #endif
+    SDL_SetRenderDrawBlendMode(Engine.renderer, SDL_BLENDMODE_BLEND);
 
     int colourMode = 0;
     if (Engine.colourMode == 1)
@@ -72,11 +69,7 @@ int InitRenderDevice()
     else
         colourMode = SDL_PIXELFORMAT_RGB888;
 
-    #if RETRO_PLATFORM == RETRO_XBOX
-        Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
-    #else
-        Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, colourMode, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
-    #endif
+    Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, colourMode, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
 
     if (!Engine.screenBuffer) {
         printLog("ERROR: failed to create screen buffer!\nerror msg: %s", SDL_GetError());
@@ -178,7 +171,7 @@ void FlipScreen()
         // Clear the screen. This is needed to keep the
         // pillarboxes in fullscreen from displaying garbage data.
 #if RETRO_USING_SDL2
-    // SDL_RenderClear(Engine.renderer);
+    SDL_RenderClear(Engine.renderer);
 #endif
 
     int pitch    = 0;
@@ -330,7 +323,19 @@ void FlipScreen()
 #if RETRO_USING_SDL2
     SDL_SetRenderTarget(Engine.renderer, NULL);
     SDL_RenderClear(Engine.renderer);
-    SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, NULL);
+
+    #if RETRO_PLATFORM == RETRO_XBOX
+        VIDEO_MODE xmode = XVideoGetMode();
+        if (xmode.width == 1280) {
+            SDL_Rect dest   = { 53, 0, 320, 240 };
+            SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, &dest);
+        }
+        if (xmode.width == 640) {
+            SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, NULL);
+        }
+    #else
+        SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, NULL);
+    #endif
 
     SDL_RenderPresent(Engine.renderer);
 #endif

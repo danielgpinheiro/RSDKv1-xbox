@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     parseArguments(argc, argv);
 #endif
 
-    debugPrint("Loading Retro Engine v1 ... Please Wait \n");
+    debugPrint("Starting Retro Engine v1 ... Please Wait \n");
     Engine.Init();
     Engine.Run();
 
