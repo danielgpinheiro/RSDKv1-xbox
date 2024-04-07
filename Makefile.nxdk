@@ -1,4 +1,4 @@
-XBE_TITLE = SonicNexusX
+XBE_TITLE = RSDKv1X
 GEN_XISO = $(XBE_TITLE).iso
 NXDK_DIR = $(CURDIR)/dependencies/xbox/nxdk
 NEXUS_DIR = $(CURDIR)/Nexus
